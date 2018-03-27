@@ -31,13 +31,21 @@ public class DatabaseManager extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        String sql = "CREATE TABLE " + TABLE_NAME + " (\n" +
+//       String sql = "CREATE TABLE " + TABLE_NAME + " (\n" +
+//
+//                " "+ COLUMN_ID + " INTEGER  PRIMARY KEY, \n" +
+//                " "+ COLUMN_NAME + " varchar(200) NOT NULL, \n" +
+//                " "+ COLUMN_PRIORITY + "varchar(200) NOT NULL\n" +
+//
+//                ");";
 
-                " "+ COLUMN_ID + " INTEGER NOT NULL CONSTRAINT employees_pk PRIMARY KEY AUTOINCREMENT, \n" +
-                " "+ COLUMN_NAME + " varchar(200) NOT NULL, \n" +
-                " "+ COLUMN_PRIORITY + "varchar(200) NOT NULL\n" +
+        String sql = "CREATE TABLE " + TABLE_NAME +  " (" +
 
-                ");";
+                 COLUMN_ID + " INTEGER PRIMARY KEY," +
+                 COLUMN_NAME + " varchar(200) NOT NULL," +
+                COLUMN_PRIORITY + " varchar(200) NOT NULL);" ;
+
+
 
         sqLiteDatabase.execSQL(sql);
     }
@@ -57,11 +65,30 @@ public class DatabaseManager extends SQLiteOpenHelper {
 
         }
 
-    Cursor getAllEmployees() {
+    Cursor getAllTasks() {
         SQLiteDatabase sqLiteDatabase = getReadableDatabase();
         return sqLiteDatabase.rawQuery("SELECT * FROM " + TABLE_NAME, null);
     }
 
+    boolean updateTask(int id, String TaskName, String priority){
+        SQLiteDatabase sqLiteDatabase = getWritableDatabase();
+
+        ContentValues cv = new ContentValues();
+        cv.put(COLUMN_NAME, TaskName);
+        cv.put(COLUMN_PRIORITY, priority);
+
+        return sqLiteDatabase.update(TABLE_NAME, cv, COLUMN_ID+"=?", new String[]{String.valueOf(id)})>0;
 
     }
+
+    boolean deleteTask(int id){
+        SQLiteDatabase sqLiteDatabase = getWritableDatabase();
+
+        return sqLiteDatabase.delete(TABLE_NAME, COLUMN_ID + "=?", new String[]{String.valueOf(id)})>0;
+
+    }
+}
+
+
+
 

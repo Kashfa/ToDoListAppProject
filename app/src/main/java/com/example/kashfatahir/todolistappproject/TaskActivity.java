@@ -31,7 +31,7 @@ public class TaskActivity extends AppCompatActivity {
 
     private void loadTaskFromDatabase(){
 
-        Cursor cursor = mDatabase.getAllEmployees();
+        Cursor cursor = mDatabase.getAllTasks();
 
         if(cursor.moveToFirst()) {
             do {
@@ -44,11 +44,10 @@ public class TaskActivity extends AppCompatActivity {
 
             } while (cursor.moveToNext());
 
-            EmployeeAdapter adapter = new EmployeeAdapter(this,R.layout.list_layout_employees, employeeList, mDatabase);
+            TaskAdapter adapter = new TaskAdapter(this,R.layout.list_layout_task, TaskList, mDatabase);
             listview.setAdapter(adapter);
         }
 
     }
 }
-    }
-}
+
