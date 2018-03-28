@@ -38,8 +38,8 @@ public class TaskActivity extends AppCompatActivity {
                 TaskList.add(new Task (
                                 cursor.getInt(0),
                         cursor.getString(1),
-                        cursor.getString(2)
-
+                        cursor.getString(2),
+                        cursor.getInt(3)
                 ));
 
             } while (cursor.moveToNext());
@@ -47,6 +47,8 @@ public class TaskActivity extends AppCompatActivity {
             TaskAdapter adapter = new TaskAdapter(this,R.layout.list_layout_task, TaskList, mDatabase);
             listview.setAdapter(adapter);
         }
+
+
 
     }
 }

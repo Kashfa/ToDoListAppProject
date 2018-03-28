@@ -6,11 +6,13 @@ import android.content.DialogInterface;
 import android.database.Cursor;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -64,6 +66,26 @@ public class TaskAdapter extends ArrayAdapter<Task> {
             }
         });
 
+        CheckBox checkBox = view.findViewById(R.id.checkbox);
+        checkBox.setChecked( task.getCompleted() );
+
+        if(task.getCompleted()) {
+            checkBox.setEnabled(false);
+        }
+
+        checkBox.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                CheckBox chx = (CheckBox) view;
+                task.setCompleted(chx.isChecked());
+
+                mDatabase.updateTask(task.getId(), task.getTask(), task.getPriority(), task.getCompleted());
+
+                notifyDataSetChanged();
+
+            }
+        });
 
         buttonDelete.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -105,7 +127,10 @@ public class TaskAdapter extends ArrayAdapter<Task> {
 
         final EditText editTextTask = view.findViewById(R.id.editTask);
         final Spinner spinner = view.findViewById(R.id.spinnerPriority);
+//        final CheckBox checkBox = view.findViewById(R.id.checkbox);
 
+
+//        checkBox.setChecked(task.getCompleted());
 
         editTextTask.setText(task.getTask());
 
@@ -115,6 +140,9 @@ public class TaskAdapter extends ArrayAdapter<Task> {
 
                 String name = editTextTask.getText().toString().trim();
                 String dept = spinner.getSelectedItem().toString();
+//                boolean checked = checkBox.isChecked();
+
+
 
 
                 if (name.isEmpty()) {
@@ -125,7 +153,7 @@ public class TaskAdapter extends ArrayAdapter<Task> {
 
 
 
-                if(mDatabase.updateTask(task.getId(), name, dept)) {
+                if(mDatabase.updateTask(task.getId(), name, dept, task.getCompleted())) {
                     Toast.makeText(mCtx, "Task Updated", Toast.LENGTH_SHORT).show();
                     loadTaskFromDatabaseAgain();
                 }else{
@@ -151,8 +179,8 @@ public class TaskAdapter extends ArrayAdapter<Task> {
                 taskList.add(new Task(
                         cursor.getInt(0),
                         cursor.getString(1),
-                        cursor.getString(2)
-
+                        cursor.getString(2),
+                        cursor.getInt(3)
                 ));
 
             } while (cursor.moveToNext());
@@ -165,6 +193,7 @@ public class TaskAdapter extends ArrayAdapter<Task> {
     }
 
 }
+
 
 
 
