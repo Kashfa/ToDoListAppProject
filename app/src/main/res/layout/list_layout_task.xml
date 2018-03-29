@@ -47,9 +47,11 @@
             android:layout_width="142dp"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
-            android:background="@android:color/holo_blue_bright"
+            android:background="?attr/colorControlActivated"
             android:backgroundTint="?android:attr/textColorLink"
-            android:text="Edit" />
+            android:text="Edit"
+            android:textColor="@android:color/background_light"
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/buttonDeleteTask"
@@ -58,7 +60,10 @@
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:background="@color/colorAccent"
-            android:text="Delete" />
+            android:text="DELETE"
+            android:textAlignment="center"
+            android:textColor="@android:color/background_light"
+            android:textStyle="bold" />
 
 
     </LinearLayout>

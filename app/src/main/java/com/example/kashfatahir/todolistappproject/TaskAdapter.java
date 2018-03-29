@@ -22,18 +22,21 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.w3c.dom.Text;
+
 import java.util.List;
 
 /**
  * Created by kashfatahir on 26/03/2018.
  */
 
-public class TaskAdapter extends ArrayAdapter<Task> {
+public class TaskAdapter extends ArrayAdapter<Task>  {
 
     Context mCtx;
     int layoutRes;
     List<Task> taskList;
     DatabaseManager mDatabase;
+
 
     public TaskAdapter(Context mCtx, int layoutRes, List<Task> taskList, DatabaseManager mDatabase) {
         super(mCtx, layoutRes, taskList);
@@ -42,6 +45,7 @@ public class TaskAdapter extends ArrayAdapter<Task> {
         this.layoutRes = layoutRes;
         this.taskList = taskList;
         this.mDatabase = mDatabase;
+
     }
 
 
@@ -58,6 +62,7 @@ public class TaskAdapter extends ArrayAdapter<Task> {
 
         TextView textViewTask = view.findViewById(R.id.textViewTask);
         TextView textViewPriority = view.findViewById(R.id.textViewPriority);
+
 
         textViewTask.setText(task.getTask());
         textViewPriority.setText(task.getPriority());
@@ -80,13 +85,15 @@ public class TaskAdapter extends ArrayAdapter<Task> {
                 intent.putExtra("task", task);
                 getContext().startActivity(intent);
             }
+
+
         });
 
         CheckBox checkBox = view.findViewById(R.id.checkbox);
         checkBox.setChecked( task.getCompleted() );
 
         if(task.getCompleted()) {
-            checkBox.setEnabled(false);
+            checkBox.setEnabled(true);
         }
 
         checkBox.setOnClickListener(new View.OnClickListener() {
@@ -128,6 +135,7 @@ public class TaskAdapter extends ArrayAdapter<Task> {
 
         return view;
     }
+
 
     private void updateTask(final Task task) {
         AlertDialog.Builder builder = new AlertDialog.Builder(mCtx);
