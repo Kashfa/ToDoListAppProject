@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.renderscript.RenderScript;
+import android.util.EventLogTags;
 import android.util.Log;
 
 /**
@@ -15,12 +16,13 @@ import android.util.Log;
 public class DatabaseManager extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "TODOLISTAPPPROJECT";
-    private static final int DATABASE_VERSION = 6;
+    private static final int DATABASE_VERSION = 7;
     private static final String TABLE_NAME = "Tasks";
     private static final String COLUMN_ID = "id";
     private static final String COLUMN_NAME = "TaskName";
     private static final String COLUMN_PRIORITY = "priority";
     private static final String COLUMN_COMPLETED = "completed";
+    private static final String COLUMN_DESCRIPTION = "description";
 
 
 
@@ -46,7 +48,8 @@ public class DatabaseManager extends SQLiteOpenHelper {
                  COLUMN_ID + " INTEGER PRIMARY KEY," +
                  COLUMN_NAME + " varchar(200) NOT NULL," +
                 COLUMN_PRIORITY + " varchar(200) NOT NULL, " +
-                COLUMN_COMPLETED + " INTEGER NOT NULL);";
+                COLUMN_COMPLETED + " INTEGER NOT NULL, " +
+                COLUMN_DESCRIPTION + " varchar (200) NOT NULL);";
 
 
         Log.e("Table", sql);
@@ -60,13 +63,14 @@ public class DatabaseManager extends SQLiteOpenHelper {
         onCreate(sqLiteDatabase);
     }
 
-    public Boolean addTask(String TaskName, String priority) {
+    public Boolean addTask(String TaskName, String priority, String description) {
         SQLiteDatabase sqLiteDatabase = getWritableDatabase();
 
         ContentValues cv = new ContentValues();
         cv.put(COLUMN_NAME, TaskName);
         cv.put(COLUMN_PRIORITY, priority);
         cv.put(COLUMN_COMPLETED, false);
+        cv.put(COLUMN_DESCRIPTION, description);
 
         return sqLiteDatabase.insert(TABLE_NAME, null, cv ) != -1;
     }
@@ -76,13 +80,14 @@ public class DatabaseManager extends SQLiteOpenHelper {
         return sqLiteDatabase.rawQuery("SELECT * FROM " + TABLE_NAME, null);
     }
 
-    boolean updateTask(int id, String TaskName, String priority, boolean completed){
+    boolean updateTask(int id, String TaskName, String priority, boolean completed, String description){
         SQLiteDatabase sqLiteDatabase = getWritableDatabase();
 
         ContentValues cv = new ContentValues();
         cv.put(COLUMN_NAME, TaskName);
         cv.put(COLUMN_PRIORITY, priority);
         cv.put(COLUMN_COMPLETED, completed);
+        cv.put(COLUMN_DESCRIPTION, description);
 
         return sqLiteDatabase.update(TABLE_NAME, cv, COLUMN_ID+"=?", new String[]{String.valueOf(id)})>0;
 

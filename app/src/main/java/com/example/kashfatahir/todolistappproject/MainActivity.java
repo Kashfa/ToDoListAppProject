@@ -26,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
 
     EditText editTask;
     Spinner spinnerPriority;
+    EditText taskDescription;
     Context mCtx;
 
     @Override
@@ -40,9 +41,6 @@ public class MainActivity extends AppCompatActivity {
         editTask = (EditText) findViewById(R.id.editTask);
         spinnerPriority = (Spinner) findViewById(R.id.spinnerPriority);
 
-
-//        findViewById(R.id.buttonAddTask).setOnClickListener(this);
-//        findViewById(R.id.textViewViewTasks).setOnClickListener(this);
     }
 
     @Override
@@ -79,24 +77,18 @@ public class MainActivity extends AppCompatActivity {
         final AlertDialog alertDialog = builder.create();
         alertDialog.show();
 
-        final EditText editTextTask = view.findViewById(R.id.editTask);
+        final EditText editTextTask = view.findViewById(R.id.addtask);
         final Spinner spinner = view.findViewById(R.id.spinnerPriority);
 
-//        if (Task.()) {
-//            editTask.setError("Task can't be empty");
-//            editTask.requestFocus();
-//            return;
-//        }
 
 
-//        editTextTask.setText(Task.getTask());
-
-        view.findViewById(R.id.buttonUpdateTask).setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.buttonAddTask).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 String task = editTextTask.getText().toString().trim();
                 String priority = spinner.getSelectedItem().toString();
+                String description = "Please add a description";
 
 
                 if (task.isEmpty()) {
@@ -107,10 +99,10 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-                if(mDatabase.addTask(task, priority)) {
-                    Toast.makeText(mCtx, "Task Updated", Toast.LENGTH_SHORT).show();
+                if(mDatabase.addTask(task, priority, description)) {
+                    Toast.makeText(mCtx, "Task Added", Toast.LENGTH_SHORT).show();
                 }else{
-                    Toast.makeText(mCtx, "Task not Updated", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mCtx, "Task not Added", Toast.LENGTH_SHORT).show();
 
                 }
                 alertDialog.dismiss();
@@ -118,12 +110,14 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
     }
 
 
     private void addTask() {
         String task = editTask.getText().toString().trim();
         String priority = spinnerPriority.getSelectedItem().toString();
+        String description = editTask.getText().toString();
 
         if (task.isEmpty()) {
             editTask.setError("Task can't be empty");
@@ -132,15 +126,15 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-        Calendar cal = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
-        String joiningDate = sdf.format(cal.getTime());
-
-        if (mDatabase.addTask(task, priority))
+        if (mDatabase.addTask(task, priority, description))
             Toast.makeText(this, "Task added", Toast.LENGTH_SHORT).show();
         else
             Toast.makeText(this, "Task added", Toast.LENGTH_SHORT).show();
 
+    }
+
+    private void addDescription(){
+        String description = editTask.getText().toString();
     }
 
     public void onClick(View view) {
@@ -149,12 +143,12 @@ public class MainActivity extends AppCompatActivity {
         Log.e("MainActivity", "clicked");
 
         switch (view.getId()) {
-            case R.id.buttonAddTask:
+            case R.id.textViewTask:
 
-                addTask();
+                addDescription();
 
-//                break;
-//            case R.id.textViewViewTasks:
+                break;
+            case R.id.taskDescription:
 
                 startActivity(new Intent(this, TaskActivity.class));
                 break;
@@ -162,8 +156,11 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
+        }
+
+
     }
-}
+
 
 
 

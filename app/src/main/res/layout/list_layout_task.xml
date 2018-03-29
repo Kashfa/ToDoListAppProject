@@ -16,6 +16,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
             android:layout_marginTop="10dp"
+            android:onClick="onClick"
             android:text="Project Preperation"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Large" />
 
@@ -33,13 +34,6 @@
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium" />
 
 
-        <TextView
-            android:id="@+id/textViewDateAdded"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="2017-09-30 10:00:00" />
-
     </LinearLayout>
 
     <LinearLayout
@@ -54,16 +48,16 @@
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:background="@android:color/holo_blue_bright"
-            android:backgroundTint="?attr/colorError"
+            android:backgroundTint="?android:attr/textColorLink"
             android:text="Edit" />
 
         <Button
             android:id="@+id/buttonDeleteTask"
-            style="@style/Widget.AppCompat.Button.Small"
+            style="@android:style/Widget.Button.Toggle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
-            android:background="@android:color/holo_orange_dark"
+            android:background="@color/colorAccent"
             android:text="Delete" />
 
 

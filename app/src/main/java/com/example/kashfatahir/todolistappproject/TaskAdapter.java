@@ -3,11 +3,15 @@ package com.example.kashfatahir.todolistappproject;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -40,6 +44,9 @@ public class TaskAdapter extends ArrayAdapter<Task> {
         this.mDatabase = mDatabase;
     }
 
+
+
+
     @Nullable
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
@@ -59,10 +66,19 @@ public class TaskAdapter extends ArrayAdapter<Task> {
         Button buttonEdit = view.findViewById(R.id.buttonEditTask);
         buttonEdit.setOnClickListener(new View.OnClickListener() {
 
-            //      view.findViewById(R.id.buttonUpdateEmployee).setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View view) {
                 updateTask(task);
+            }
+        });
+
+        textViewTask.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), TaskDescriptionActivity.class);
+                intent.putExtra("task", task);
+                getContext().startActivity(intent);
             }
         });
 
@@ -80,7 +96,7 @@ public class TaskAdapter extends ArrayAdapter<Task> {
                 CheckBox chx = (CheckBox) view;
                 task.setCompleted(chx.isChecked());
 
-                mDatabase.updateTask(task.getId(), task.getTask(), task.getPriority(), task.getCompleted());
+                mDatabase.updateTask(task.getId(), task.getTask(), task.getPriority(), task.getCompleted(), task.getDescription());
 
                 notifyDataSetChanged();
 
@@ -118,7 +134,7 @@ public class TaskAdapter extends ArrayAdapter<Task> {
 
         LayoutInflater inflater = LayoutInflater.from(mCtx);
 
-        View view = inflater.inflate(R.layout.dialog_update_task, null);
+        View view = inflater.inflate(R.layout.dialog_updating_task, null);
 
         builder.setView(view);
 
@@ -153,7 +169,7 @@ public class TaskAdapter extends ArrayAdapter<Task> {
 
 
 
-                if(mDatabase.updateTask(task.getId(), name, dept, task.getCompleted())) {
+                if(mDatabase.updateTask(task.getId(), name, dept, task.getCompleted(), task.getDescription())) {
                     Toast.makeText(mCtx, "Task Updated", Toast.LENGTH_SHORT).show();
                     loadTaskFromDatabaseAgain();
                 }else{
@@ -180,7 +196,8 @@ public class TaskAdapter extends ArrayAdapter<Task> {
                         cursor.getInt(0),
                         cursor.getString(1),
                         cursor.getString(2),
-                        cursor.getInt(3)
+                        cursor.getInt(3),
+                        cursor.getString(4)
                 ));
 
             } while (cursor.moveToNext());
